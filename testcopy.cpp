@@ -42,18 +42,22 @@ int solveQ(string& s,int idx,Node* curr){
     return solveQ(s,idx+1,curr->children[s[idx]-'a']);
 }
 int main(){
-    root=new Node();
-    int n,m;
-    cin>>n>>m;
-    while(n--){
-        string s;
-        cin>>s;
-        insert(s);
-    }
-    while(m--){
-        string s;
-        cin>>s;
-        cout<<solveQ(s,0,root)<<endl;
+    int n;
+    cin>>n;
+    int h[n],in[n];
+
+    for(int i=0;i<n;i++)
+        cin>>h[i]>>in[i];
+    for(int i=0;i<n;i++){
+        int ans=0;
+        for(int j=i;j<n;j++){
+               if(h[i]<=h[j])
+                    ans+=(in[i]-in[j]);
+                else
+                    ans+=(in[j]-in[i]);
+                cout<<ans<<endl;
+        }
+        cout<<"->"<<ans<<endl;
     }
     return 0;
 }

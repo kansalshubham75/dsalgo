@@ -10,21 +10,23 @@ void read(vector<int>& arr){
     for(int i=0;i<arr.size();i++)
         cin>>arr[i];
 }
-ll helper(int sum,vc<ll>& dp){
-    if(sum==0)return 1;
-    if(dp[sum]!=-1)return dp[sum];
-    dp[sum]=0;
-    for(int i=3;i<=sum;i++){
-        if(sum-i<0)break;
-        dp[sum]=(dp[sum]+helper(sum-i,dp))%mod;
-    }
-    return dp[sum];
-}
+
 void solve(){
-    int s;
-    cin>>s;
-    vc<ll> dp(s+1,-1);
-    cout<<helper(s,dp)%mod;
+    int max_=0;
+    int n;
+    cin>>n;
+    unordered_set<string> s;
+    vc<pii> pts(n);
+    for(int i=0;i<n;i++){
+        cin>>pts[i].first>>pts[i].second;
+        s.insert(to_string(pts[i].first)+"_"+to_string(pts[i].second));
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            max_=max(max_,(abs(pts[i].first-pts[j].first)+abs(pts[i].second-pts[j].second)));
+        }
+    }
+    cout<<max_;
 }
 int main(){
     ios_base::sync_with_stdio(false);

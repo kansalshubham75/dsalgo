@@ -13,34 +13,38 @@ void solve(){
     ll n;
     cin>>n;
     ll sum=(1LL*n*(n+1))/2;
-    // cout<<sum<<endl;
     if(sum%2){
         cout<<0<<endl;return;
     }
     sum=sum/2;
-    // cout<<sum<<endl;
-    ll small=1;
-    ll temp=0;
-    while(temp+small<=sum){
-        temp+=small;
-        small++;
+    ll smaller=0,small_size=0;
+    for(int i=1;i<n;i++){
+        if(smaller+i>sum)break;
+        small_size=i;
+        smaller+=i;
     }
-    // cout<<small<<endl;
-    small--;
-    ll sumSmall=temp;
-    // cout<<sumSmall<<endl;
-    if(sumSmall==sum){
-        ll smallswap=(small*(small-1))/2;
-        ll big=n-small;
-        ll bigSwap=(big*(big-1))/2;
-        ll ans=smallswap+bigSwap;
-        if(big==1)ans++;
-        cout<<ans<<endl;return;
+    // cout<<smaller<<" "<<small_size<<endl;
+    ll diff=sum-smaller;
+    ll swaps=0;
+    if(diff==0){
+        ll small_swaps=(small_size*(small_size-1))/2;
+        ll large_size=n-small_size;
+        ll large_swaps=(large_size*(large_size-1))/2;
+        swaps=small_swaps+large_swaps;
+        if(large_size==1)swaps++;
+    }else{
+        for(ll i=1;i<=small_size;i++){
+            if(i+diff>small_size && i+diff<=n)  swaps++;
+        }
     }
-    ll diff=sum-sumSmall;
-    ll swaps=min(n-diff,small)-(small-diff+1)+1;
-    if(swaps<0) swaps=0;
     cout<<swaps<<endl;
+    
+    // if(diff==0){
+        
+    // }else{
+    //     int min_ele=max(small_size-diff+1,0LL);
+    //     int max_ele=min(n,small_size+diff);
+    // }
 }
 int main(){
     ios_base::sync_with_stdio(false);
