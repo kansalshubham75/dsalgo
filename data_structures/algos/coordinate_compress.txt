@@ -1,0 +1,8 @@
+void coordinateCompress(vector<int>& values,vector<int>& new_coordinates){
+    int i=1,idx=1;
+    new_coordinates.push_back(i);
+    while(idx<values.size()){
+        if(values[idx]!=values[idx-1])i++;
+        new_coordinates.push_back(i);
+    }
+}
