@@ -5,87 +5,37 @@ using namespace std;
 #define pll pair<long long,long long>
 #define pb push_back
 #define vc vector
+void read(vector<int>& arr){
+    for(int i=0;i<arr.size();i++)
+        cin>>arr[i];
+}
 
-class BIT{
-    public:
-    int size;
-    vector<int> bit;
-    BIT(int n){
-        size=n+1;
-        bit.assign(size,0);
+void solve(){
+    vc<vc<vc<int>>> schedule={{{1,3},{6,7},{11,15}},{{2,4},{17,18}},{{2,5},{9,12},{6,8}}};
+    vc<vc<int>> merged;
+    for(int i=0;i<schedule.size();i++){
+        for(int j=0;j<schedule[i].size();j++)merged.pb(schedule[i][j]);
     }
-    int sum(int i){     //get prefix sum [1.....i]
-        int ans=0;
-        while(i>0){
-            ans+=bit[i];
-            i-=(i&-i);
-        }
-        return ans;
+    sort(merged.begin(),merged.end(),[](vc<int>& slot1,vector<int>& slot2){
+        if(slot1[0]==slot2[0])return slot1[1]<slot2[1];
+        return slot1[0]<slot2[0];
+    });
+    vector<vc<int>> res;
+    res.pb(merged[0]);
+    for(int i=1;i<merged.size();i++){
+        if(merged[i][0]<=res.back()[1])res.back()[1]=max(res.back()[1],merged[i][1]);
+        else res.pb(merged[i]);
     }
-    void update(int i,int delta){
-        while(i<size){
-            bit[i]+=delta;
-            i+=(i&-i);
-        }
-    }
-    
-    int rangeSum(int l,int r){      //range sum[l....r]
-        return sum(r)-sum(l-1);
-    }
-};
-
-
-int bSearch(int lo,ll val,vector<ll>& arr){
-	int hi=arr.size()-1;
-	while(lo<hi){
-		int mid=lo+((hi-lo)/2);
-		if(arr[mid]<val){
-			lo=mid+1;
-		}else{
-			hi=mid;
-		}
-	}
-	return hi;
+    for(auto& v:res)
+    cout<<v[0]<<" "<<v[1]<<endl;
 }
 int main(){
-	int n,k;
-	cin>>n>>k;
-	vc<int> arr(n);
-	for(int &a:arr)cin>>a;
-	vector<int> original_array(n);
-    for(int i=0;i<n;i++)original_array[i]=arr[i];
-	sort(arr.begin(),arr.end());
-	unordered_map<int,int> m;
-	int i=1,val=1;
-	m[arr[0]]=1;
-	for(;i<n;i++){
-		if(arr[i]!=arr[i-1])val++;
-		m[arr[i]]=val;
-	}
-    // for(int i=0;i<n;i++)cout<<m[arr[i]]<<" ";
-    // cout<<endl;
-	BIT bit(val);
-    // for(int i=0;i<n;i++)cout<<m[arr[i]]<<" ";
-	for(i=0;i<n;i++){
-		bit.update(m[arr[i]],1);
-	}
-	vector<ll> bigger(n,0);
-	for(int i=0;i<n;i++){
-		bigger[i]=bit.rangeSum(m[original_array[i]]+1,val);
-		bit.update(m[original_array[i]],-1);
-	}
-    ll ans=0;
-	sort(bigger.begin(),bigger.end());
-    // cout<<bSearch(8,bigger);
-    // for(int i:bigger)cout<<i<<" ";
-	for(int i=0;i<n;i++){
-        // cout<<bigger[i]<<" ";
-		ll search_val=k-bigger[i];
-		int idx=bSearch(i+1,search_val,bigger);
-        if(bigger[idx]<search_val || idx==i)idx++;
-        // cout<<n-idx<<endl;
-		ans+=(n-idx);
-	}
-	cout<<ans;
-	return 0;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int t=1;
+    // cin>>t;
+    while(t--){
+        solve();
+    }
+    return 0;
 }
