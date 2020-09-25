@@ -1,80 +1,60 @@
-// C++ program to calculate height of a special tree 
-// whose leaf nodes forms a circular doubly linked list 
+// C++ program to print the nodes of binary 
+// tree as they become the leaf node 
+
 #include <bits/stdc++.h> 
 using namespace std; 
 
-// A binary tree Node 
-struct Node 
-{ 
+// Binary tree node 
+struct Node { 
 	int data; 
-	Node *left, *right; 
+	// int order; 
+	struct Node* left; 
+	struct Node* right; 
 }; 
 
-// function to check if given node is a leaf node or node 
-bool isLeaf(Node* node) 
+// Utiltiy function to allocate a new node 
+struct Node* newNode(int data, int order) 
 { 
-	// If given node's left's right is pointing to given node 
-	// and its right's left is pointing to the node itself 
-	// then it's a leaf 
-	return node->left && node->left->right == node && 
-		node->right && node->right->left == node; 
-} 
-
-/* Compute the height of a tree -- the number of 
-Nodes along the longest path from the root node 
-down to the farthest leaf node.*/
-int maxDepth(Node* node) 
-{ 
-	// if node is NULL, return 0 
-	if (node == NULL) 
-		return 0; 
-
-	// if node is a leaf node, return 1 
-	if (isLeaf(node)) 
-		return 1; 
-
-	// compute the depth of each subtree and take maximum 
-	return 1 + max(maxDepth(node->left), maxDepth(node->right)); 
-} 
-
-// Helper function that allocates a new tree node 
-Node* newNode(int data) 
-{ 
-	Node* node = new Node; 
+	struct Node* node = new Node; 
 	node->data = data; 
+	// node->order = order; 
 	node->left = NULL; 
 	node->right = NULL; 
 
-	return node; 
+	return (node); 
 } 
 
-// Driver code 
+unordered_map<int,vector<Node*>> m;
+int dfs(Node* n){
+    if(n==NULL)return 0;
+
+    int l=dfs(n->left);
+    int r=dfs(n->right);
+
+    int myOrder=max(l,r)+1;
+    m[myOrder].push_back(n);
+    return myOrder;
+}
+// Driver Code 
 int main() 
 { 
-	Node* root = newNode(1); 
-
-	root->left = newNode(2); 
-	root->right = newNode(3); 
-	root->left->left = newNode(4); 
-	root->left->right = newNode(5); 
-	root->left->left->left = newNode(6); 
-
-	// Given tree contains 3 leaf nodes 
-	Node *L1 = root->left->left->left; 
-	Node *L2 = root->left->right; 
-	Node *L3 = root->right; 
-
-	// create circular doubly linked list out of 
-	// leaf nodes of the tree 
-
-	// set next pointer of linked list 
-	L1->right = L2, L2->right = L3, L3->right = L1; 
-
-	// set prev pointer of linked list 
-	L3->left = L2, L2->left = L1, L1->left = L3; 
-
-	// calculate height of the tree 
-	cout << "Height of tree is " << maxDepth(root); 
-
+	struct Node* root = newNode(8, 0); 
+	root->left = newNode(3, 0); 
+	root->right = newNode(10, 0); 
+	root->left->left = newNode(1, 0); 
+	root->left->right = newNode(6, 0); 
+	root->right->left = newNode(14, 0); 
+	root->right->right = newNode(4, 0); 
+	root->left->left->left = newNode(7, 0); 
+	root->left->left->right = newNode(13, 0); 
+    dfs(root);
+    int i=1;
+    while(!m.empty()){
+        vector<Node*> leafs=m[i];
+        for(int i=0;i<leafs.size();i++)cout<<leafs[i]->data<<" ";
+        cout<<endl;
+        m.erase(i);
+        i++;
+    }
 	return 0; 
 } 

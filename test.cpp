@@ -9,25 +9,39 @@ void read(vector<int>& arr){
     for(int i=0;i<arr.size();i++)
         cin>>arr[i];
 }
-
+double dist(vector<pair<double,double>>& arr,int p1,int p2){
+    return sqrt(((arr[p1].first-arr[p1].first)*(arr[p1].first-arr[p1].first)) + 
+                ((arr[p1].second-arr[p1].second)*(arr[p1].second-arr[p1].second)));
+}
+double brute(vector<pair<double,double>>& arr,int lo,int hi){
+    double min_=INT_MAX;
+    for(int i=lo;i<hi;i++){
+        for(int j=i+1;j<=hi;j++){
+            min_=min(min_,dist(arr,i,j));
+        }
+    }
+    return min_;
+}
+double find_min(vector<pair<double,double>>& arr,int lo,int hi){
+    if(hi-lo<=3)return brute(arr,lo,hi);
+    int mid=lo+((hi-lo)/2);
+    double l=find_min(arr,lo,mid);
+    double r=find_min(arr,mid+1,hi);
+    double min_dist=min(l,r);
+    vector<pair<double,double>> strip;
+    int mid_x=arr[mid].first;
+    for(int i=lo;i<=hi;i++){
+        // if(i==mid)continue;
+        if(dist(arr,i,mid)<min_dist)strip.push_back(arr[i]);
+    }
+    sort(strip.begin(),strip.end());
+    return min(min_dist,brute(strip,0,strip.size()-1));
+}
 void solve(){
-    vc<vc<vc<int>>> schedule={{{1,3},{6,7},{11,15}},{{2,4},{17,18}},{{2,5},{9,12},{6,8}}};
-    vc<vc<int>> merged;
-    for(int i=0;i<schedule.size();i++){
-        for(int j=0;j<schedule[i].size();j++)merged.pb(schedule[i][j]);
-    }
-    sort(merged.begin(),merged.end(),[](vc<int>& slot1,vector<int>& slot2){
-        if(slot1[0]==slot2[0])return slot1[1]<slot2[1];
-        return slot1[0]<slot2[0];
-    });
-    vector<vc<int>> res;
-    res.pb(merged[0]);
-    for(int i=1;i<merged.size();i++){
-        if(merged[i][0]<=res.back()[1])res.back()[1]=max(res.back()[1],merged[i][1]);
-        else res.pb(merged[i]);
-    }
-    for(auto& v:res)
-    cout<<v[0]<<" "<<v[1]<<endl;
+    vector<pair<double,double>> arr={{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}};
+    int n=arr.size();
+    sort(arr.begin(),arr.end());
+    cout<<find_min(arr,0,n-1);
 }
 int main(){
     ios_base::sync_with_stdio(false);
