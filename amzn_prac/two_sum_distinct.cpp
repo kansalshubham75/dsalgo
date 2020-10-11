@@ -10,7 +10,19 @@ void read(vector<int>& arr){
         cin>>arr[i];
 }
 void solve(){
-    
+    vc<int> arr={1, 5, 1, 5};
+    int tar=6,cnt=0;
+    unordered_set<int> seen;
+    unordered_set<int> taken;
+    for(int i=0;i<arr.size();i++){
+        int complement=tar-arr[i];
+        if(seen.count(complement) && !taken.count(arr[i]) && !taken.count(complement)){
+            cnt++;
+            taken.insert(arr[i]);
+        }
+        seen.insert(arr[i]);
+    }
+    cout<<cnt;
 }
 int main(){
     ios_base::sync_with_stdio(false);

@@ -18,7 +18,7 @@ void dfs(int u,vector<vector<int>>& g){
     disc[u]=low[u]=t;
     t++;
     for(int v:g[u]){
-        if(v!=par[u]){
+            if(v==par[u])continue;
             if(disc[v]==0){
                 par[v]=u;
                 dfs(v,g);
@@ -30,7 +30,6 @@ void dfs(int u,vector<vector<int>>& g){
             }else{
                 low[u]=min(low[u],disc[v]);
             }
-        }
     }
 }
 void solve(){

@@ -10,7 +10,18 @@ void read(vector<int>& arr){
         cin>>arr[i];
 }
 void solve(){
-    
+    vector<int> arr={20, 50, 40, 25, 30, 10};
+    int tar=60;
+    unordered_map<int,int> seen;
+    vector<int> ans={-1,-1,INT_MIN};
+    for(int i=0;i<arr.size();i++){
+        if(seen.find(tar-arr[i])!=seen.end()){
+            int max_=max(tar-arr[i],arr[i]);
+            if(ans[2]<max_)ans={seen[tar-arr[i]],i,max_};
+        }
+        seen[arr[i]]=i;
+    }
+    cout<<ans[0]<<" "<<ans[1];
 }
 int main(){
     ios_base::sync_with_stdio(false);

@@ -10,7 +10,23 @@ void read(vector<int>& arr){
         cin>>arr[i];
 }
 void solve(){
-    
+    string s="(((a+b))+((c)))+d";
+    stack<int> st;
+    int n=s.length(),cnt=0;
+    for(int i=0;i<n;i++){
+        if(s[i]==')'){
+            int in_between=0;
+            while(!st.empty() && s[st.top()]!='('){
+                st.pop();
+                in_between++;
+            }
+            st.pop();
+            if(in_between==0)cnt++;
+        }else{
+            st.push(i);
+        }
+    }
+    cout<<cnt<<endl;
 }
 int main(){
     ios_base::sync_with_stdio(false);

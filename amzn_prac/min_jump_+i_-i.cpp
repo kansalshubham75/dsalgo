@@ -1,32 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
-// #define pii pair<int,int>
+#define pii pair<int,int>
 #define pll pair<long long,long long>
 #define pb push_back
 #define vc vector
-class pii{
-    public:
-    int first;
-    int second;
-    pii(int f,int s){
-        first=f;
-        second=s;
-    }
-    bool operator<(pii const& p1)const{
-        return this->first > p1.second;
-    }
-};
 void read(vector<int>& arr){
     for(int i=0;i<arr.size();i++)
         cin>>arr[i];
 }
-
 void solve(){
-    priority_queue<pii> pq;
-    pq.push(pii(5,0));
-    pq.push(pii(2,1));
-    cout<<pq.top().first;
+    int n=12;
+    int curr=0,jump=1;
+    while(curr<n){
+        curr+=jump;
+        jump++;
+    }
+    int diff=curr-n;
+    if(diff%2==0){
+        cout<<jump-1;
+    }else{
+        if(jump%2)cout<<jump;
+        else cout<<jump+1;
+    }
 }
 int main(){
     ios_base::sync_with_stdio(false);
