@@ -1,0 +1,46 @@
+    class priority_queue_{
+        bool is_min=0;
+        bool comp(int v1,int v2){
+            if(is_min)return v1<v2;
+            return v2<v1;
+        }
+        void upHeapify(int ci){
+            int pi=(ci-1)/2;
+            if(pi>=0 && comp(pq[ci],pq[pi])){
+                swap(pq[ci],pq[pi]);
+                upHeapify(pi);
+            }
+        }
+        void downHeapify(int pi){
+            int maxi=pi;
+            int lc=2*pi+1;
+            int rc=2*pi+2;
+            if(lc<size() && comp(pq[lc],pq[maxi]))maxi=lc;
+            if(rc<size() && comp(pq[rc],pq[maxi]))maxi=rc;
+            if(maxi!=pi){
+                swap(pq[maxi],pq[pi]);
+                downHeapify(maxi);
+            }
+        }
+        public:
+        vector<int> pq;
+        priority_queue_(bool im){
+            is_min=im;
+        }
+        void push(int x){
+            pq.push_back(x);
+            upHeapify(pq.size()-1);
+        }
+        int top(){
+            return pq[0];
+        }
+        void pop(){
+            swap(pq[0],pq[size()-1]);
+            pq.pop_back();
+            downHeapify(0);
+        }
+        
+        int size(){
+            return pq.size();
+        }
+    };
